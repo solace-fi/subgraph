@@ -1,27 +1,71 @@
 specVersion: 0.0.2
-description: Gravatar for Ethereum
-repository: https://github.com/graphprotocol/example-subgraph
 schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum/contract
-    name: Gravity
-    network: mainnet
+    name: Vault
+    network: rinkeby
     source:
-      address: '0x2E645469f354BB4F5c8a05B3b30A929361cf77eC'
-      abi: Gravity
+      address: "0xB01866e0Ef4D87368F675A83Fd3491072561A9C4"
+      abi: Vault
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
       entities:
-        - Gravatar
+        - Approval
+        - ClaimProcessed
+        - DepositMade
+        - EmergencyShutdown
+        - GovernanceTransferred
+        - StrategyAdded
+        - StrategyAddedToQueue
+        - StrategyRemovedFromQueue
+        - StrategyReported
+        - StrategyRevoked
+        - StrategyUpdateDebtRatio
+        - StrategyUpdateMaxDebtPerHarvest
+        - StrategyUpdateMinDebtPerHarvest
+        - StrategyUpdatePerformanceFee
+        - Transfer
+        - UpdateWithdrawalQueue
+        - WithdrawalMade
       abis:
-        - name: Gravity
-          file: ./abis/Gravity.json
+        - name: Vault
+          file: ./abis/Vault.json
       eventHandlers:
-        - event: NewGravatar(uint256,address,string,string)
-          handler: handleNewGravatar
-        - event: UpdatedGravatar(uint256,address,string,string)
-          handler: handleUpdatedGravatar
+        - event: Approval(indexed address,indexed address,uint256)
+          handler: handleApproval
+        - event: ClaimProcessed(indexed uint256,indexed address,indexed uint256)
+          handler: handleClaimProcessed
+        - event: DepositMade(indexed address,indexed uint256,indexed uint256)
+          handler: handleDepositMade
+        - event: EmergencyShutdown(bool)
+          handler: handleEmergencyShutdown
+        - event: GovernanceTransferred(address)
+          handler: handleGovernanceTransferred
+        - event: StrategyAdded(indexed address,uint256,uint256,uint256,uint256)
+          handler: handleStrategyAdded
+        - event: StrategyAddedToQueue(indexed address)
+          handler: handleStrategyAddedToQueue
+        - event: StrategyRemovedFromQueue(indexed address)
+          handler: handleStrategyRemovedFromQueue
+        - event: StrategyReported(indexed address,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256)
+          handler: handleStrategyReported
+        - event: StrategyRevoked(address)
+          handler: handleStrategyRevoked
+        - event: StrategyUpdateDebtRatio(indexed address,indexed uint256)
+          handler: handleStrategyUpdateDebtRatio
+        - event: StrategyUpdateMaxDebtPerHarvest(indexed address,indexed uint256)
+          handler: handleStrategyUpdateMaxDebtPerHarvest
+        - event: StrategyUpdateMinDebtPerHarvest(indexed address,indexed uint256)
+          handler: handleStrategyUpdateMinDebtPerHarvest
+        - event: StrategyUpdatePerformanceFee(indexed address,indexed uint256)
+          handler: handleStrategyUpdatePerformanceFee
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+        - event: UpdateWithdrawalQueue(indexed address[])
+          handler: handleUpdateWithdrawalQueue
+        - event: WithdrawalMade(indexed address,indexed uint256)
+          handler: handleWithdrawalMade
       file: ./src/mapping.ts
